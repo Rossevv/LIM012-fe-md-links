@@ -1,0 +1,21 @@
+  
+# EditorConfig ayuda a los desarrolladores a definir y mantener una coherencia
+# estilos de codificación entre diferentes editores e IDEs
+# editorconfig.org
+
+raíz = verdadero
+
+[ * ]
+
+# Cambie esta configuración a su preferencia
+indent_style = espacio
+indent_size = 2
+
+# Le recomendamos que mantenga estos sin cambios
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[ * .md ]
+trim_trailing_whitespace = false
