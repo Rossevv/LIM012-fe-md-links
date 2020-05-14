@@ -1,9 +1,8 @@
 {
-  "name": "md-links-rosevv",
-  "version": "0.1.0",
-  "description": "Md_link_reader",
-  "main": "./src/cli.js",
-  "preferGlobal": false,
+  "name": "r-mdlinks",
+  "version": "1.0.2",
+  "description": "Library Markdown",
+  "main": "./lib/mdLinks.js",
   "scripts": {
     "build": "babel src -d lib",
     "test": "jest --coverage",
@@ -14,29 +13,29 @@
     "url": " git + https: //github.com/Rossevv/LIM012-fe-md-links.git "
   },
   "keywords": [
-    "markdown"
+    "markdown",
+    "node.js",
+    "npm"
   ],
   "author": "Rosmery Chavez",
   "license": "MIT",
-  "bin": {
-    "md-links": "./src/cli.js"
-  },
+  "bin": "cli.js",
   "bugs": {
     "url": "https://github.com/Rossevv/LIM012-fe-md-links/issues"
   },
   "homepage": "https://github.com/Rossevv/LIM012-fe-md-links#readme",
   "dependencies": {
     "axios": "^0.19.2",
-    "canvas": "^2.5.0",
     "chalk": "^4.0.0",
+    "commander": "^5.1.0",
     "fetch": "^1.1.0",
     "filehound": "^1.17.4",
     "jsdom": "^15.2.1",
     "markdown-link-extractor": "^1.2.3",
     "marked": "^1.0.0",
     "node-fetch": "^2.6.0",
-    "underscore": "^1.10.2",
-    "ws": "^7.2.5"
+    "node-msi": "^1.1.1",
+    "underscore": "^1.10.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -46,14 +45,13 @@
     "babel-preset-minify": "^0.5.1",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^2.5.0",
     "jest": "^25.3.0"
   },
-  "optionalDependencies": {
-    "bufferutil": "^4.0.1",
-    "utf-8-validate": "^5.0.2"
-  } 
+  "files": [
+    "index.js",
+    "cli.js",
+    "lib/mdLinks",
+    "lib/index",
+    "lib/options"
+  ]
 }
