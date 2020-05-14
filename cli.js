@@ -11,36 +11,15 @@ const program = new commander.Command(packageJson.bin)
   .option("-v, --validate")
   .option("-s, --stats")
   .on("--help", () => {
-    console.log(`\n Only ${chalk.green("<path>")} is required.\n`);
-    console.log(`Choose option ${chalk.cyan("--validate")} for:`);
-    console.log(
-      ` ${chalk.magenta(
-        "- Check and validate all links in your md files extension"
-      )}`
-    );
-    console.log(
-      ` ${chalk.magenta(
-        "- Will return the following information: path, link, name, status code, and status text"
-      )}\n`
-    );
-    console.log(`Choose option ${chalk.cyan("--stats")}for:`);
-    console.log(
-      ` ${chalk.magenta(
-        "- Check and get information about which links are unique and the total of links you have"
-      )}\n`
-    );
-    console.log(`Both options ${chalk.cyan("--validate --stats")} for:`);
-    console.log(
-      ` ${chalk.magenta(
-        "- Will return the following links's information: Unique, Broken and Total of links in the files md extension"
-      )}\n`
-    );
-    console.log(
-      `${chalk.bgYellow.black(
-        "If you have any problems, do not hesitate to file an issue "
-      )}`
-    );
-    console.log(` ${chalk.cyan("")}\n`);
+    console.log(`\nOnly ${chalk.blue("<path>")} is required.\n`);
+    console.log(`Opción: ${chalk.blue("--validate")} para:`);
+    console.log(` ${chalk.green("- Revisa y valida todos todos los links en tus archivos con extensión .md con OK/FAIL")}`);
+    console.log(` ${chalk.green("- Retornará la siguiente información de los links: path, link, file, status text, status code")}\n`);
+    console.log(`Opción: ${chalk.blue("--stats")} para:`);
+    console.log(` ${chalk.green("- Retorna estadísticas básicas de los links encontrados: Totales(Totales) y Unicos(Unique)")}\n`);
+    console.log(`Ambas opciones ${chalk.blue("--validate --stats")} para:`);
+    console.log(` ${chalk.green("- Retornará estadísticas básicas de los links encontrados: Unique, Broken y Total")}\n`);
+    console.log(`${chalk.bgGreen.black("Si tiene problemas, no dude en dejar un 'issue'.")}`);
   });
 
 program.parse(process.argv);

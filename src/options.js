@@ -20,7 +20,7 @@ const cli = (path, options) => {
           if (options.stats) {
             totalAndUnique(links);
             brokens(links);
-          } else
+          } else 
             links.forEach(({ file, href, code, validate, text }) => {
               console.log(
                 `${chalk.yellow(file)} ${chalk.cyan(href)} ${chalk.magenta(
@@ -36,40 +36,41 @@ const cli = (path, options) => {
                 href
               )}...${chalk.blue(text)}`
             )
-          );
+          )
+          
       })
       .catch(() =>
         console.log(
           `\n${chalk
-            .rgb(227, 13, 219)
+            .rgb(153, 255, 153)
             .bold(
-              "---> PLEASE CHECK THE PATH (is wrong or there`rnt links into .md)-->"
-            )} ${chalk.bgRgb(227, 13, 219).yellow.bold(path)}\n `
+              "---> Revisa la ruta, o no existen archivos con extensión .md dentro -->"
+            )} ${chalk.bgRgb(153, 255, 153).yellow.bold(path)}\n `
         )
       );
   } else {
     // Si el usuario no pasa ningun path le saldra este aviso, con informacin sobre como debe ejecutar el comando CLI
     console.error(
-      `\n${chalk.bgYellow
-        .rgb(112, 19, 147)
-        .bold("🡲  Please specify the path:  ")}`
+      `\n${chalk.bgBlue
+        .rgb(102, 255, 102)
+        .bold("🡲  Especifique la ruta:  ")}`
     );
     console.log(
-      `  ${chalk.cyan("p-mdlinks")} ${chalk.yellow.bold("<path>")}\n`
+      `  ${chalk.cyan("r-mdlinks")} ${chalk.green.bold("<path>")}\n`
     );
     console.log(
-      `\n${chalk.bgYellow.rgb(112, 19, 147).bold("🡲  For example:  ")}`
+      `\n${chalk.bgBlue.rgb(102, 255, 102).bold("🡲  Por ejemplo:  ")}`
     );
     console.log(
-      `  ${chalk.cyan("p-mdlinks")} ${chalk.yellow.bold("md_directory")}`
+      `  ${chalk.cyan("r-mdlinks")} ${chalk.green.bold("md_directory")}`
     );
     console.log(
-      `  ${chalk.cyan("p-mdlinks")} ${chalk.yellow.bold("README.md")}\n`
+      `  ${chalk.cyan("r-mdlinks")} ${chalk.green.bold("file.md")}\n`
     );
     console.log(
-      `${chalk.bgYellow.rgb(112, 19, 147).bold("🡲  Run  ")}${chalk.cyan(
-        `\n${"  p-mdlinks"} --help`
-      )} ${chalk.yellow.bold("for info ")}\n`
+      `${chalk.bgBlue.rgb(102, 255, 102).bold("🡲  Run  ")}${chalk.cyan(
+        `\n${"  r-mdlinks"} --help`
+      )} ${chalk.green.bold("para más información ")}\n`
     );
   }
 };
