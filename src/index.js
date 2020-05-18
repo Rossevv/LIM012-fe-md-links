@@ -38,7 +38,7 @@ const isDirOrFile = (path) =>
     });
   });
 
-const links = [];
+
 
 // FUNCION PARA LEER ARCHIVO/LINKS Y CREAR ARRAY
 const readFile = (file) =>
@@ -47,6 +47,7 @@ const readFile = (file) =>
       if (err) {
         reject(err);
       } else {
+        const links = [];
         const renderer = new marked.Renderer();
         renderer.link = (href, title, text) => {
           links.push({
@@ -103,4 +104,4 @@ const readDir = (path) =>
 //   .catch((err) => console.log(err));
 
 // module.exports = mdLinks;
-module.exports = isDirOrFile;
+module.exports = {isDirOrFile,readFile,readDir};

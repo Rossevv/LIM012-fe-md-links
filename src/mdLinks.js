@@ -1,10 +1,19 @@
-const fetch = require("node-fetch");
-const isDirOrFile = require("./index");
+import isDirOrFile from "../src/index";
+require('isomorphic-fetch')
+
+// const linkFetch = (object) => {
+//   fetch(object.href)
+//   .then((date) => {
+//     object.status = date.status;
+//     object.statusText = date.statusText;
+//     return object
+//   })
+// }
 
 // INFORMACIÓN DEL LINK (PETICIÓN HTTP CON FETCH)
-const validateLinks = (filess) =>
-  Promise.all(
-    filess.map(
+const validateLinks = (files) => {
+  return Promise.all(
+    files.map(
       (link) =>
         new Promise((resolve) => {
           fetch(link.href)
@@ -23,22 +32,20 @@ const validateLinks = (filess) =>
         })
     )
   );
+};
 
 // FUNCIÓN PARA EXTRAER LINKS A VALIDAR
 const linksToValidate = (path) =>
   new Promise((resolve, reject) => {
     isDirOrFile(path)
       .then((res) => {
-        validateLinks(res)
-          .then((res) => {
+        return validateLinks(res)
+      })
+      .then((res) => {
             resolve(res);
-          })
-          .catch((err) => {
-            reject(err);
-          });
       })
       .catch((err) => {
-        reject(err);
+            reject(err);
       });
   });
 
@@ -46,12 +53,17 @@ const linksToValidate = (path) =>
 const mdLinks = (path, option) =>
   new Promise((resolve) => {
     if (option !== undefined) {
-      resolve(linksToValidate(path));
-    } else resolve(isDirOrFile(path)); // ---> Colocamos el else para que la funcion no se ejecute 2 veces
+      linksToValidate(path).then((result) => resolve(result));
+    } else {
+      isDirOrFile(path).then((result) => resolve(result));
+       // ---> Colocamos el else para que la funcion no se ejecute 2 veces
+    }
   });
 
-// mdLinks("readme", { validate: false })
+
+// mdLinks("testeo", {validate :true})
 //   .then((resolve) => console.log(resolve))
 //   .catch((err) => console.log(err));
 
-module.exports = mdLinks;
+module.exports = {mdLinks, validateLinks, validateLinks}
+

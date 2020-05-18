@@ -1,130 +1,152 @@
-const getAbsolutePath = require('../src/index');
-const mdLinks = require('./mdLinks')
-// import { getAbsolutePath } from './index.js';
 
-describe('Read the route', () => {
-  it('Should return a absolute path', () => {
-    expect(getAbsolutePath('README.md')).toBe(
-      'C:\\Users\\Estudiante\\Desktop\\md-links\\LIM012-fe-md-links\\README.md'
-    );
-  });
-  it('Should return a relative path', () => {
-    expect(getAbsolutePath('README.md')).toBe(
-      'C:\\Users\\Estudiante\\Desktop\\md-links\\LIM012-fe-md-links\\README.md'
-    );
-  });
+// const mdLinks = require('../src/mdLinks');
+import { isDirOrFile } from '../src/index';
+import { readFile } from '../src/index';
+import { readDir } from '../src/index';
+import { mdLinks } from '../src/mdLinks';
+const fetchMock = require('fetch-mock')
+import { validateLinks } from '../src/mdLinks'; 
+require('isomorphic-fetch')
+
+// const {linksToValidate} = require('../src/mdLinks');
+
+fetchMock
+.mock('https://www.nasa.gov/', 200)
+.mock('https://git-scm.comps/', 404)
+.mock('*',200)
+
+const newArray = [{"code": 200, "file": "testeo\\prueba.md", "href": "https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array", "text": "Array en MDN", "validate": "OK"}, {"code": 200, "file": "testeo\\prueba.md", "href": "https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach", "text": "Array MDN", "validate": "OK"}, {"code": 200, "file": "testeo\\prueba.md", "href": "https://git-scm.com/", "text": "Git", "validate": "OK"}]
+
+describe('function linksToValidate', () => {
+    test('la función que valida los links debe retornar statusCode 200', (done) => {
+        validateLinks([
+          {
+            file: 'testeo\\prueba.md',
+            href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array',
+            text: 'Array en MDN'
+          },
+          {
+            file: 'testeo\\prueba.md',
+            href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach',
+            text: 'Array MDN'
+          },
+          {
+            file: 'testeo\\prueba.md',
+            href: 'https://git-scm.com/',
+            text: 'Git'
+          }
+        ])
+        .then((resp) => {
+            expect(resp).toStrictEqual(newArray);
+            done();
+        });
+    });
 });
 
 
 
-describe('mdLinks', () => {
-  it('Deberia ser una función', () => {
-    expect(typeof (mdLinks)).toBe('function');
-  });
-  it('Deberia leer un archivo .md y retornar los links encontrados', () =>{
-    expect(mdLinks('./prueba.md')).resolves.toEqual([
-      {
-        file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba.md',
-        herf: 'https://github.com/workshopper/learnyounode',
-        text: 'learnyounode'
-      },
-      {
-        file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba.md',
-        herf: 'https://github.com/workshopper/how-to-npm',
-        text: 'how-to-npm'
-      },
-      {
-        file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba.md',
-        herf: 'https://github.com/stevekane/promise-it-wont-hurt',
-        text: 'promise-it-wont-hurt'
-      }
-    ]);
-  });
-  it('Debería retornar error si el archivo no existe', ()  => {
-    expect(mdLinks('./prueba1.md')).rejects.toThrow('Ruta No Valida. Por Favor, Ingresar Ruta Valida.');
-  });
-  it('Deberia retornar error si el archivo no es .md', () =>{
-    expect(mdLinks('./prueba.js')).rejects.toThrow('ENOENT');
-  });
+it('Deberia retornar error si el archivo no es .md', () =>{
+  expect(isDirOrFile('testeo.js')).rejects.toThrow('ENOENT');
+});
 
-  it('Deberia recorrer un directorio y retornar los links encontrados dentro de los archivo .md que contenga', () =>{
-     expect(mdLinks('./prueba-md')).resolves.toBe(
-      [
+
+
+
+describe('readFiles', () => {
+  it('Debería extraer los links de files con extensión .md', (done) => {
+    try {
+      expect(readFile('testeo/prueba.md')).resolves.toMatchObject([
         {
-          file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba.md',
-          herf: 'https://github.com/workshopper/learnyounode',
-          text: 'learnyounode'
+          file: 'testeo/prueba.md',
+          href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array',
+          text: 'Array en MDN'
         },
         {
-          file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba.md',
-          herf: 'https://github.com/workshopper/how-to-npm',
-          text: 'how-to-npm'
+          file: 'testeo/prueba.md',
+          href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach', 
+          text: 'Array MDN'
         },
         {
-          file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba.md',
-          herf: 'https://github.com/stevekane/promise-it-wont-hurt',
-          text: 'promise-it-wont-hurt'
-        },
-        {
-          file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba2.md',
-          herf: 'https://nodejs.org/es/about/',
-          text: 'Acerca de Node.js - Documentación oficial'
-        },
-        {
-          file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba2.md',
-          herf: 'https://medium.freecodecamp.org/what-exactly-is-node-js-ae36e97449f5',
-          text: 'What exactly is Node.js? - freeCodeCamp'
-        },
-        {
-          file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba2.md',
-          herf: 'https://www.youtub.com/watch?v=WgSc1nv_04Gweee',
-          text: '¿Qué es Nodejs? Javascript en el Servidor - Fazt en YouTube'
-        },
-        {
-          file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba2.md',
-          herf: 'https://www.genbeta.com/desarrollo/node-js-y-npm',
-          text: 'Node.js y npm'
-        },
-        {
-          file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba2.md',
-          herf: 'https://www.genbeta.com/desarrollo/node-js-y-npm',
-          text: 'Node.js y npm'
+          file: 'testeo/prueba.md',
+          href: 'https://git-scm.com/',
+          text: 'Git'
         }
       ]);
-   });
-
-   it('Deberia retornar una advertencia si no encuentra archivos .md dentro del directorio', () =>{
-     expect(mdLinks('./prueba-js')).resolves.toThrow('No se encontraron Archivos .md')
-    });
-
-  it('Deberia leer un archivo .md, retornar los links encontrados y validarlos', () =>{
-    expect(mdLinks('./prueba.md', '--validate')).resolves.toBe([
-      {
-        file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba.md',
-        herf: 'https://github.com/workshopper/learnyounode',
-        text: 'learnyounode',
-        status: 'OK',
-        code: 200
-      },
-      {
-        file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba.md',
-        herf: 'https://github.com/workshopper/how-to-npm',
-        text: 'how-to-npm',
-        status: 'OK',
-        code: 200
-      },
-      {
-        file: 'C:\\Users\\NUCLEOS\\Documents\\GitHub\\SCL009-md-links\\test\\prueba-md\\prueba.md',
-        herf: 'https://github.com/stevekane/promise-it-wont-hurt',
-        text: 'promise-it-wont-hurt',
-        status: 'OK',
-        code: 200
-      }
-    ]);
+      done();
+    } catch (error) {
+      done(error);
+    }
   });
+});
 
-  it('Deberia leer un archivo .md, retornar stadisticas de los links encontrados: Totales - Unicos', () =>{
-    expect(mdLinks('./prueba2.md', '--stats')).resolves.toBe({ Total: 5, Unique: 4 });
+
+describe('isDirOrFile', () => {
+  it('Debería ingresar a un directorio y extraer los links de files xon extensión .md', (done) => {
+    try {
+      expect(isDirOrFile('testeo')).resolves.toEqual([
+        {
+          file: 'testeo\\prueba.md',
+          href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array',
+          text: 'Array en MDN'
+        },
+        {
+          file: 'testeo\\prueba.md',
+          href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach',
+          text: 'Array MDN'
+        },
+        {
+          file: 'testeo\\prueba.md',
+          href: 'https://git-scm.com/',
+          text: 'Git'
+        }
+      ]);
+      done();
+    } catch (error) {
+      done(error);
+    }
   });
+});
 
-})
+describe('readDir', () => {
+  it('Debería ingresar a un directorio y extraer files con extensión .md', (done) => {
+    try {
+      expect(readDir('testeo')).resolves.toStrictEqual([
+        'testeo\\prueba.md', 
+        'testeo\\prueba2.md'
+      ]);
+      done();
+    } catch (error) {
+      done(error);
+    }
+  });
+});
+
+describe('mdLinks', () => {
+  it.only('Debería validar los links OK / FAIL', () => {
+     
+      return expect(mdLinks('testeo', {validate: true})).resolves.toStrictEqual([
+        {
+          file: 'testeo\\prueba.md',
+          href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array',
+          text: 'Array en MDN',
+          validate: 'OK',
+          code: 200
+        },
+        {
+          file: 'testeo\\prueba.md',
+          href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach', 
+          text: 'Array MDN',
+          validate: 'OK',
+          code: 200
+        },
+        {
+          file: 'testeo\\prueba.md',
+          href: 'https://git-scm.com/',
+          text: 'Git',
+          validate: 'OK',
+          code: 200
+        }
+      ]);
+  });
+});
+

@@ -1,3 +1,7 @@
+* [Array en MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array)
+* [Array MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach)
+* [Git](https://git-scm.com/)
+
 # Markdown Links
 Objetivo alcanzado: La librería lee y analice archivos en formato `Markdown`, para verificar los links que contengan y reportar
 algunas estadísticas.
