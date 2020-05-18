@@ -1,15 +1,6 @@
 import isDirOrFile from "../src/index";
 require('isomorphic-fetch')
 
-// const linkFetch = (object) => {
-//   fetch(object.href)
-//   .then((date) => {
-//     object.status = date.status;
-//     object.statusText = date.statusText;
-//     return object
-//   })
-// }
-
 // INFORMACIÓN DEL LINK (PETICIÓN HTTP CON FETCH)
 const validateLinks = (files) => {
   return Promise.all(
