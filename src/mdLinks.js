@@ -1,10 +1,13 @@
-import isDirOrFile from "../src/index";
-require('isomorphic-fetch')
+// const fetch = require("node-fetch");
+// const isDirOrFile = require("./index");
+import { isDirOrFile } from "../src/index";
+// import 'isomorphic-fetch';
+require('isomorphic-fetch');
 
 // INFORMACIÓN DEL LINK (PETICIÓN HTTP CON FETCH)
-const validateLinks = (files) => {
-  return Promise.all(
-    files.map(
+const validateLinks = (filess) =>
+  Promise.all(
+    filess.map(
       (link) =>
         new Promise((resolve) => {
           fetch(link.href)
@@ -23,24 +26,40 @@ const validateLinks = (files) => {
         })
     )
   );
-};
 
 // FUNCIÓN PARA EXTRAER LINKS A VALIDAR
 const linksToValidate = (path) =>
   new Promise((resolve, reject) => {
     isDirOrFile(path)
       .then((res) => {
-        return validateLinks(res)
-      })
-      .then((res) => {
+        validateLinks(res)
+          .then((res) => {
             resolve(res);
+          })
+          .catch((err) => {
+            reject(err);
+          });
       })
       .catch((err) => {
-            reject(err);
+        reject(err);
       });
   });
 
 // ---> Renombrando la funcion a mdLinks ya que es la funcion principal
+// const mdLinks = (path, option) =>
+//   new Promise((resolve) => {
+//     if (option !== undefined) {
+//       resolve(linksToValidate(path));
+//     } else resolve(isDirOrFile(path)); // ---> Colocamos el else para que la funcion no se ejecute 2 veces
+//   });
+
+// mdLinks("prueba", {validate: true})
+//   .then((resolve) => console.log(resolve))
+//   .catch((err) => console.log(err));
+
+// module.exports = mdLinks;
+
+
 const mdLinks = (path, option) =>
   new Promise((resolve) => {
     if (option !== undefined) {
@@ -52,9 +71,4 @@ const mdLinks = (path, option) =>
   });
 
 
-// mdLinks("testeo", {validate :true})
-//   .then((resolve) => console.log(resolve))
-//   .catch((err) => console.log(err));
-
-module.exports = {mdLinks, validateLinks, validateLinks}
-
+module.exports = {mdLinks, validateLinks}

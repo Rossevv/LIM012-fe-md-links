@@ -4,6 +4,17 @@ const fileHound = require("filehound");
 const path = require("path");
 const chalk = require("chalk");
 
+// const fs = require("fs");
+// const marked = require("marked");
+// const fileHound = require("filehound");
+// const path = require("path");
+// const chalk = require("chalk");
+
+
+
+
+
+
 // FUNCIÓN PARA SABER SI LA RUTA ES DIRECTORIO
 
 const isDirOrFile = (path) =>
@@ -38,7 +49,11 @@ const isDirOrFile = (path) =>
     });
   });
 
+  // isDirOrFile('prueba')
+  // .then((resolve) => console.log(resolve))
+  // .catch((err) => console.log(err));
 
+const links = [];
 
 // FUNCION PARA LEER ARCHIVO/LINKS Y CREAR ARRAY
 const readFile = (file) =>
@@ -47,7 +62,6 @@ const readFile = (file) =>
       if (err) {
         reject(err);
       } else {
-        const links = [];
         const renderer = new marked.Renderer();
         renderer.link = (href, title, text) => {
           links.push({
@@ -61,6 +75,12 @@ const readFile = (file) =>
       }
     });
   });
+
+
+// readFile('prueba/prueba1.md')
+//   .then((resolve) => console.log(resolve))
+//   .catch((err) => console.log(err));
+
 
 // FUNCIÓN QUE VERIFICA SI LA EXTECIÓN DEL ARCHIVO ES .MD
 const fileMD = (file) =>
@@ -99,9 +119,14 @@ const readDir = (path) =>
       });
   });
 
-// readDir('readme')
+// readDir('prueba')
 //   .then((resolve) => console.log(resolve))
 //   .catch((err) => console.log(err));
 
 // module.exports = mdLinks;
+// module.exports = isDirOrFile;
+
+
+
+
 module.exports = {isDirOrFile,readFile,readDir};
