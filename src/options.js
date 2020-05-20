@@ -73,6 +73,5 @@ const cli = (path, options) => {
     );
   }
 };
-// console.log(totalAndUnique(array1));
 
 module.exports = cli;
