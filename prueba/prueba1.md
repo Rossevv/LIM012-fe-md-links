@@ -1,2 +1,1 @@
 - [Publicar packpage](https://docs.npmjs.com/getting-started/publishing-npm-packages)
-- [Path](https://nodejs.org/api/path.html)

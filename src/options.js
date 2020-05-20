@@ -1,4 +1,4 @@
-import mdLinks from "./mdLinks";
+import {mdLinks} from "./mdLinks";
 import chalk from "chalk";
 
 const totalAndUnique = (arr) => {
@@ -20,7 +20,7 @@ const cli = (path, options) => {
           if (options.stats) {
             totalAndUnique(links);
             brokens(links);
-          } else 
+          } else
             links.forEach(({ file, href, code, validate, text }) => {
               console.log(
                 `${chalk.yellow(file)} ${chalk.cyan(href)} ${chalk.magenta(
@@ -36,43 +36,43 @@ const cli = (path, options) => {
                 href
               )}...${chalk.blue(text)}`
             )
-          )
-          
+          );
       })
       .catch(() =>
         console.log(
           `\n${chalk
-            .rgb(153, 255, 153)
+            .rgb(227, 13, 219)
             .bold(
-              "---> Revisa la ruta, o no existen archivos con extensión .md dentro -->"
-            )} ${chalk.bgRgb(153, 255, 153).yellow.bold(path)}\n `
+              "---> PLEASE CHECK THE PATH (is wrong or there`rnt links into .md)-->"
+            )} ${chalk.bgRgb(227, 13, 219).yellow.bold(path)}\n `
         )
       );
   } else {
     // Si el usuario no pasa ningun path le saldra este aviso, con informacin sobre como debe ejecutar el comando CLI
     console.error(
-      `\n${chalk.bgBlue
-        .rgb(102, 255, 102)
-        .bold("🡲  Especifique la ruta:  ")}`
+      `\n${chalk.bgYellow
+        .rgb(112, 19, 147)
+        .bold("🡲  Please specify the path:  ")}`
     );
     console.log(
-      `  ${chalk.cyan("r-mdlinks")} ${chalk.green.bold("<path>")}\n`
+      `  ${chalk.cyan("p-mdlinks")} ${chalk.yellow.bold("<path>")}\n`
     );
     console.log(
-      `\n${chalk.bgBlue.rgb(102, 255, 102).bold("🡲  Por ejemplo:  ")}`
+      `\n${chalk.bgYellow.rgb(112, 19, 147).bold("🡲  For example:  ")}`
     );
     console.log(
-      `  ${chalk.cyan("r-mdlinks")} ${chalk.green.bold("md_directory")}`
+      `  ${chalk.cyan("p-mdlinks")} ${chalk.yellow.bold("md_directory")}`
     );
     console.log(
-      `  ${chalk.cyan("r-mdlinks")} ${chalk.green.bold("file.md")}\n`
+      `  ${chalk.cyan("p-mdlinks")} ${chalk.yellow.bold("README.md")}\n`
     );
     console.log(
-      `${chalk.bgBlue.rgb(102, 255, 102).bold("🡲  Run  ")}${chalk.cyan(
-        `\n${"  r-mdlinks"} --help`
-      )} ${chalk.green.bold("para más información ")}\n`
+      `${chalk.bgYellow.rgb(112, 19, 147).bold("🡲  Run  ")}${chalk.cyan(
+        `\n${"  p-mdlinks"} --help`
+      )} ${chalk.yellow.bold("for info ")}\n`
     );
   }
 };
+// console.log(totalAndUnique(array1));
 
 module.exports = cli;

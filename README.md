@@ -1,6 +1,3 @@
-* [Array en MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array)
-* [Array MDN](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach)
-* [Git](https://git-scm.com/)
 
 # Markdown Links
 Objetivo alcanzado: La librería lee y analice archivos en formato `Markdown`, para verificar los links que contengan y reportar
@@ -16,7 +13,13 @@ algunas estadísticas.
 
 La funcionalidad principal de la librería es poder extraer los links de un archivo markdown.
 
-Esto se puede lograr si el usuario proporciona una ruta a el o los archivos markdown que desee analizar. Estos links también pueden ser analizados mediante 2 opciones, validate y stats.
+Esto se puede lograr si el usuario proporciona una ruta a el o los archivos markdown que desee analizar. Estos links también pueden ser analizados mediante 2 opciones, "validate" y "stats".
+
+### Instalación 
+
+ - Instalar la libreria via npm install --global <https://github.com/Rossevv/LIM012-fe-md-links>/md-links
+ - Módulo instalable vía npm install r-mdlinks
+ - Este módulo incluye tanto un ejecutable como una interfaz que se puede importar como require para usarlo programáticamente.
 
 #### `r-mdLinks (path, options)`
 
@@ -24,7 +27,7 @@ Esto se puede lograr si el usuario proporciona una ruta a el o los archivos mark
 
 - `path`: Ruta absoluta o relativa al archivo o directorio.
 - `options`: Un objeto con las siguientes propiedades:
-  - `validate`: { validate : true }
+- `validate`: { validate : true }
 
 ##### Valor de retorno
 
@@ -133,7 +136,7 @@ Si pasamos la opción `--h` el output (salida) es las opciones que el usuario pu
 
 Módulo instalable via `npm install r-mdlinks`. Este módulo incluye un ejecutable como una interfaz que se puede importar con `require`.
 
-```sh
-1.- En el terminal de tu proyecto: npm install r-mdlinks
-2.- Puedes hacer importarlo mediante require (ver los ejemplos de arriba para más detalle)
-```
+#### Backlog del producto
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/55680887/82503071-33b22c80-9abe-11ea-8935-157abd79d0d9.png">
+</p>

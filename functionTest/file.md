@@ -1,0 +1,1 @@
+- [Test Jest](https://www.pluralsight.com/guides/test-asynchronous-code-jest)

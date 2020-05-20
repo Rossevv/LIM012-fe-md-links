@@ -1,152 +1,141 @@
 
-// const mdLinks = require('../src/mdLinks');
 import { isDirOrFile } from '../src/index';
-import { readFile } from '../src/index';
+import { linksToValidate } from '../src/mdLinks';
 import { readDir } from '../src/index';
 import { mdLinks } from '../src/mdLinks';
-const fetchMock = require('fetch-mock')
-import { validateLinks } from '../src/mdLinks'; 
-require('isomorphic-fetch')
+import { fileMD } from '../src/index';
+const fetchMock = require ('fetch-mock');
 
-// const {linksToValidate} = require('../src/mdLinks');
+import { validateLinks } from '../src/mdLinks'; 
+require('isomorphic-fetch');
+
+const newArray = [
+  {
+    file: 'prueba\\prueba1.md',
+    href: 'https://docs.npmjs.com/getting-started/publishing-npm-packages',
+    text: 'Publicar packpage',
+    validate: 'OK',
+    code: 200
+  },
+  {
+    file: 'prueba\\pepito\\pepito2.md',
+    href: 'https://nodejs.org/api/path.html',
+    text: 'Path',
+    validate: 'OK',
+    code: 200
+  },
+  {
+    file: 'prueba\\pepito\\pepito1.md',
+    href: 'https://nodejs.org/docs/latest-v0.10.x/api/modules.html',
+    text: 'módulos (CommonJS)',
+    validate: 'OK',
+    code: 200
+  }
+]
 
 fetchMock
 .mock('https://www.nasa.gov/', 200)
 .mock('https://git-scm.comps/', 404)
-.mock('*',200)
-
-const newArray = [{"code": 200, "file": "testeo\\prueba.md", "href": "https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array", "text": "Array en MDN", "validate": "OK"}, {"code": 200, "file": "testeo\\prueba.md", "href": "https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach", "text": "Array MDN", "validate": "OK"}, {"code": 200, "file": "testeo\\prueba.md", "href": "https://git-scm.com/", "text": "Git", "validate": "OK"}]
+.mock('*', 200);
 
 describe('function linksToValidate', () => {
     test('la función que valida los links debe retornar statusCode 200', (done) => {
-        validateLinks([
-          {
-            file: 'testeo\\prueba.md',
-            href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array',
-            text: 'Array en MDN'
-          },
-          {
-            file: 'testeo\\prueba.md',
-            href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach',
-            text: 'Array MDN'
-          },
-          {
-            file: 'testeo\\prueba.md',
-            href: 'https://git-scm.com/',
-            text: 'Git'
-          }
-        ])
+        validateLinks(
+          [
+            {
+              file: 'prueba\\prueba1.md',
+              href: 'https://docs.npmjs.com/getting-started/publishing-npm-packages',
+              text: 'Publicar packpage'
+            },
+            {
+              file: 'prueba\\pepito\\pepito2.md',
+              href: 'https://nodejs.org/api/path.html',
+              text: 'Path'
+            },
+            {
+              file: 'prueba\\pepito\\pepito1.md',
+              href: 'https://nodejs.org/docs/latest-v0.10.x/api/modules.html',
+              text: 'módulos (CommonJS)'
+            },
+          ])
         .then((resp) => {
             expect(resp).toStrictEqual(newArray);
             done();
         });
     });
 });
-
-
-
-it('Deberia retornar error si el archivo no es .md', () =>{
-  expect(isDirOrFile('testeo.js')).rejects.toThrow('ENOENT');
+test('fileMD', () => {
+  return expect(fileMD('prueba/prueba1.md')).resolves.toEqual(
+    [
+      {
+        file: 'prueba/prueba1.md',
+        href: 'https://docs.npmjs.com/getting-started/publishing-npm-packages',
+        text: 'Publicar packpage'
+      }
+    ]
+  );
+});
+test('should resolve to some value', () => {
+  return expect(readDir('prueba')).resolves.toEqual(
+  [
+    'prueba\\pepito\\pepito1.md',
+    'prueba\\pepito\\pepito2.md',
+    'prueba\\prueba1.md',
+  ]);
+});
+it('Deberia retornar ENOENT si la ruta es incorrecta', () =>{
+  expect(isDirOrFile('./prueba.js')).rejects.toThrow('ENOENT');
+});
+it('Deberia retornar error si la ruta es incorrecta', () =>{
+  expect(mdLinks('./prueba.js')).rejects.toThrow('ENOENT');
+});
+test('error fileMD', () => {
+  return expect(fileMD('prueba/prueba1.m')).rejects.toBe(undefined);
 });
 
-
-
-
-describe('readFiles', () => {
-  it('Debería extraer los links de files con extensión .md', (done) => {
-    try {
-      expect(readFile('testeo/prueba.md')).resolves.toMatchObject([
-        {
-          file: 'testeo/prueba.md',
-          href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array',
-          text: 'Array en MDN'
-        },
-        {
-          file: 'testeo/prueba.md',
-          href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach', 
-          text: 'Array MDN'
-        },
-        {
-          file: 'testeo/prueba.md',
-          href: 'https://git-scm.com/',
-          text: 'Git'
-        }
-      ]);
-      done();
-    } catch (error) {
-      done(error);
-    }
-  });
+test('should resolve to some value', () => {
+  return expect(linksToValidate('functionTest')).resolves.toEqual(
+    [{
+    "code": 200, 
+    "file": "prueba/prueba1.md", 
+    "href": "https://docs.npmjs.com/getting-started/publishing-npm-packages", 
+    "text": "Publicar packpage", 
+    "validate": "OK"
+    }, 
+    {"code": 200, 
+    "file": "functionTest\\file.md", 
+    "href": "https://www.pluralsight.com/guides/test-asynchronous-code-jest", 
+    "text": "Test Jest", 
+    "validate": "OK"
+  }]
+  )
 });
 
-
-describe('isDirOrFile', () => {
-  it('Debería ingresar a un directorio y extraer los links de files xon extensión .md', (done) => {
-    try {
-      expect(isDirOrFile('testeo')).resolves.toEqual([
-        {
-          file: 'testeo\\prueba.md',
-          href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array',
-          text: 'Array en MDN'
-        },
-        {
-          file: 'testeo\\prueba.md',
-          href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach',
-          text: 'Array MDN'
-        },
-        {
-          file: 'testeo\\prueba.md',
-          href: 'https://git-scm.com/',
-          text: 'Git'
-        }
-      ]);
-      done();
-    } catch (error) {
-      done(error);
-    }
-  });
-});
-
-describe('readDir', () => {
-  it('Debería ingresar a un directorio y extraer files con extensión .md', (done) => {
-    try {
-      expect(readDir('testeo')).resolves.toStrictEqual([
-        'testeo\\prueba.md', 
-        'testeo\\prueba2.md'
-      ]);
-      done();
-    } catch (error) {
-      done(error);
-    }
-  });
-});
-
-describe('mdLinks', () => {
-  it.only('Debería validar los links OK / FAIL', () => {
-     
-      return expect(mdLinks('testeo', {validate: true})).resolves.toStrictEqual([
-        {
-          file: 'testeo\\prueba.md',
-          href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array',
-          text: 'Array en MDN',
-          validate: 'OK',
-          code: 200
-        },
-        {
-          file: 'testeo\\prueba.md',
-          href: 'https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach', 
-          text: 'Array MDN',
-          validate: 'OK',
-          code: 200
-        },
-        {
-          file: 'testeo\\prueba.md',
-          href: 'https://git-scm.com/',
-          text: 'Git',
-          validate: 'OK',
-          code: 200
-        }
-      ]);
-  });
+test('should resolve to some value', () => {
+  return expect(mdLinks('functionTest', {validate:true})).resolves.toEqual(
+  [
+  {
+      "code": 200,
+      "file": "prueba/prueba1.md",
+      "href": "https://docs.npmjs.com/getting-started/publishing-npm-packages",
+      "text": "Publicar packpage",
+      "validate": "OK",
+    },
+  {
+      "code": 200,
+      "file": "functionTest\\file.md",
+      "href": "https://www.pluralsight.com/guides/test-asynchronous-code-jest",
+      "text": "Test Jest",
+      "validate": "OK",
+    },
+  {
+      "code": 200,
+      "file": "functionTest\\file.md",
+      "href": "https://www.pluralsight.com/guides/test-asynchronous-code-jest",
+      "text": "Test Jest",
+      "validate": "OK",
+      }
+    ]
+  )
 });
 
