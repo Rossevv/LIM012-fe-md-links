@@ -1,32 +1,24 @@
-// const fetch = require("node-fetch");
-// const isDirOrFile = require("./index");
 import { isDirOrFile } from "../src/index";
-// import 'isomorphic-fetch';
 require('isomorphic-fetch');
 
+// En el caso de que algun link falle y fetch no lo pueda analizar definimos un valor a retornar por defecto
+// Si ejecutamos reject la ejecucion de la funcion se detiene y no se mostrara la informacion
 // INFORMACIÓN DEL LINK (PETICIÓN HTTP CON FETCH)
 const validateLinks = (filess) =>
   Promise.all(
     filess.map(
       (link) =>
-        new Promise((resolve) => {
+        new Promise((resolve,reject) => {
           fetch(link.href)
             .then((res) => {
               link.validate = res.statusText !== "OK" ? "FAIL" : "OK"; // ok, fail
               link.code = res.status; // #
               resolve(link);
             })
-            .catch((err) => {
-              // ---> En el caso de que algun link falle y fetch no lo pueda analizar definimos un valor a retornar por defecto
-              // ---> Si ejecutamos reject la ejecucion de la funcion se detiene y no se mostrara la informacion
-              link.validate = "FAIL";
-              link.code = 404;
-              resolve(link);
-            });
+            .catch((err) => {reject(err)});
         })
     )
   );
-
 // FUNCIÓN PARA EXTRAER LINKS A VALIDAR
 const linksToValidate = (path) =>
   new Promise((resolve, reject) => {
@@ -36,30 +28,10 @@ const linksToValidate = (path) =>
           .then((res) => {
             resolve(res);
           })
-          .catch((err) => {
-            reject(err);
-          });
+          .catch((err) => reject(err));
       })
-      .catch((err) => {
-        reject(err);
-      });
   });
-
 // ---> Renombrando la funcion a mdLinks ya que es la funcion principal
-// const mdLinks = (path, option) =>
-//   new Promise((resolve) => {
-//     if (option !== undefined) {
-//       resolve(linksToValidate(path));
-//     } else resolve(isDirOrFile(path)); // ---> Colocamos el else para que la funcion no se ejecute 2 veces
-//   });
-
-// mdLinks("prueba", {validate: true})
-//   .then((resolve) => console.log(resolve))
-//   .catch((err) => console.log(err));
-
-// module.exports = mdLinks;
-
-
 const mdLinks = (path, option) =>
   new Promise((resolve) => {
     if (option !== undefined) {
@@ -69,6 +41,4 @@ const mdLinks = (path, option) =>
        // ---> Colocamos el else para que la funcion no se ejecute 2 veces
     }
   });
-
-
-module.exports = {mdLinks, validateLinks}
+module.exports = {mdLinks, validateLinks,linksToValidate}

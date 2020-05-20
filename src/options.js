@@ -1,4 +1,4 @@
-import mdLinks from "./mdLinks";
+import {mdLinks} from "./mdLinks";
 import chalk from "chalk";
 
 const totalAndUnique = (arr) => {
