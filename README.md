@@ -136,7 +136,7 @@ Si pasamos la opción `--h` el output (salida) es las opciones que el usuario pu
 
 Módulo instalable via `npm install r-mdlinks`. Este módulo incluye un ejecutable como una interfaz que se puede importar con `require`.
 
-```sh
-1.- En el terminal de tu proyecto: npm install r-mdlinks
-2.- Puedes hacer importarlo mediante require (ver los ejemplos de arriba para más detalle)
-```
+#### Backlog del producto
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/55680887/82503071-33b22c80-9abe-11ea-8935-157abd79d0d9.png">
+</p>
