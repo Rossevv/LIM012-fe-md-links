@@ -1,6 +1,6 @@
 {
   "name": "r-mdlinks",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Library Markdown",
   "main": "./lib/mdLinks.js",
   "scripts": {
@@ -57,5 +57,9 @@
     "lib/mdLinks",
     "lib/index",
     "lib/options"
-  ]
+  ],
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  }
 }
